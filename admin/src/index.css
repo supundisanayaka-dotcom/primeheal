@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  /* Set the brand primary color to match the patient-facing app's clinical teal theme */
+  --color-primary: #00A7A7;
+
+  /* Bring over the responsive auto grid column utility */
+  --grid-template-columns-auto: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* Sidebar NavLink Icon Styles */
+.sidebar-link img {
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.sidebar-link-active img {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(87%) saturate(545%) hue-rotate(151deg) brightness(91%) contrast(85%);
+  opacity: 1;
+}
