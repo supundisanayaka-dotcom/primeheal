@@ -26,6 +26,10 @@ import doc12 from './doc12.png'
 import doc13 from './doc13.png'
 import doc14 from './doc14.png'
 import doc15 from './doc15.png'
+import login1 from './login 01.png'
+import login2 from './login 02.jpeg'
+import login3 from './login 03.png'
+import login4 from './login 04.png'
 
 export const assets = {
     add_icon,
@@ -55,5 +59,9 @@ export const assets = {
     doc12,
     doc13,
     doc14,
-    doc15
+    doc15,
+    login1,
+    login2,
+    login3,
+    login4
 }

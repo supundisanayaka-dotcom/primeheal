@@ -1,93 +1,203 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { assets } from '../assets/assets'
+import { AppContext } from '../context/AppContext'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const { setToken } = useContext(AppContext)
+  const navigate = useNavigate()
 
-  const [state, setState] = useState('Sign Up')
+  const [state, setState] = useState('Login') // 'Login' or 'Sign Up'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+
+  // Slideshow state
+  const loginImages = [assets.login1, assets.login2, assets.login3, assets.login4]
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % loginImages.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [loginImages.length])
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
-    console.log({ name, email, password, state })
+    // Simulated authentication
+    setToken(true)
+    navigate('/')
   }
 
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg">
+    <div className="w-full min-h-screen bg-white flex flex-col md:flex-row overflow-hidden transition-all duration-300">
+      
+      {/* Left side: Slideshow and Branding Overlay */}
+      <div className="relative hidden md:block md:w-[58%] h-screen min-h-screen overflow-hidden bg-slate-900">
+        {loginImages.map((img, idx) => (
+          <img
+            key={idx}
+            src={img}
+            alt={`Login Visual ${idx + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              idx === currentImageIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
+        
+        {/* Soft dark gradient overlay for text readability at the bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-        <p className="text-2xl font-semibold">
-          {state === 'Sign Up' ? 'Create Account' : 'Login'}
-        </p>
-
-        <p>
-          Please {state === 'Sign Up' ? 'sign up' : 'log in'} to book appointment
-        </p>
-
-        {/* Full Name */}
-        {state === 'Sign Up' && (
-          <div className="w-full">
-            <p>Full Name</p>
-            <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+        {/* Branding Logo Overlay - Top Left */}
+        <div className="absolute top-12 left-12 flex items-center gap-3 text-white select-none">
+          <div className="w-12 h-12 rounded-full border-2 border-white/90 flex items-center justify-center font-black text-2xl backdrop-blur-sm shadow-md">
+            5
           </div>
-        )}
-
-        {/* Email */}
-        <div className="w-full">
-          <p>Email</p>
-          <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <div className="leading-tight">
+            <span className="font-extrabold tracking-widest block text-base">SECOND</span>
+            <span className="font-medium tracking-[0.25em] text-xs opacity-90 block -mt-1">OPINION</span>
+          </div>
         </div>
 
-        {/* Password */}
-        <div className="w-full">
-          <p>Password</p>
-          <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        {/* Dynamic Caption - Bottom */}
+        <div className="absolute bottom-16 left-16 right-16 text-white">
+          <h3 className="text-3xl font-bold leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+            Lorem Ipsum is simply dummy text of the printing
+          </h3>
         </div>
-
-        <button className="bg-primary text-white w-full py-2 rounded-md text-base">
-          {state === 'Sign Up' ? 'Create Account' : 'Login'}
-        </button>
-
-        {state === 'Sign Up' ? (
-          <p>
-            Already have an account?{' '}
-            <span
-              onClick={() => setState('Login')}
-              className="text-primary underline cursor-pointer"
-            >
-              Login here
-            </span>
-          </p>
-        ) : (
-          <p>
-            Create a new account{' '}
-            <span
-              onClick={() => setState('Sign Up')}
-              className="text-primary underline cursor-pointer"
-            >
-              click here
-            </span>
-          </p>
-        )}
-
       </div>
-    </form>
+
+      {/* Right side: Authentication Form */}
+      <div className="w-full md:w-[42%] min-h-screen flex flex-col justify-center bg-white p-8 md:p-12 lg:p-16 overflow-y-auto">
+        <form onSubmit={onSubmitHandler} className="w-full max-w-[400px] mx-auto flex flex-col justify-center py-6">
+          <div>
+            {/* Title & Subtitle */}
+            <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+              {state === 'Login' ? 'Sign In' : 'Sign Up'}
+            </h2>
+            <p className="text-gray-400 mt-2 text-sm leading-relaxed font-normal">
+              Lorem Ipsum is simply dummy text of the printing
+            </p>
+
+            {/* Inputs Container */}
+            <div className="mt-8 flex flex-col gap-4">
+              
+              {/* Full Name (Sign Up only) */}
+              {state === 'Sign Up' && (
+                <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                  <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Enter your name"
+                    className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {/* Mobile / Email */}
+              <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                  Mobile number / email ID
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Enter mobile number or email"
+                  className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              {/* Password */}
+              <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200 flex items-center justify-between">
+                <div className="flex-1">
+                  <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    Password
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    placeholder="••••••••"
+                    className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                
+                {/* Toggle Password Visibility */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-gray-400 hover:text-gray-600 focus:outline-none ml-2"
+                >
+                  {showPassword ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Forgot Password */}
+            {state === 'Login' && (
+              <a href="#" className="block text-right text-xs text-gray-400 hover:text-[#00B4B4] mt-2 transition-colors duration-150">
+                Forgot password?
+              </a>
+            )}
+          </div>
+
+          <div>
+            {/* Primary Action Button */}
+            <button
+              type="submit"
+              className="w-full bg-[#00B4B4] hover:bg-[#009E9E] active:scale-[0.98] text-white font-semibold py-3.5 rounded-xl mt-8 transition-all duration-150 shadow-md shadow-[#00B4B4]/10"
+            >
+              {state === 'Login' ? 'Sign In now' : 'Sign Up now'}
+            </button>
+
+            {/* Social Authentication Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setToken(true)
+                navigate('/')
+              }}
+              className="w-full border border-gray-200 hover:bg-gray-50 active:scale-[0.98] text-gray-600 font-semibold py-3.5 rounded-xl mt-3 flex items-center justify-center gap-3 transition-all duration-150 text-sm"
+            >
+              <img src={assets.google_logo} alt="Google Logo" className="w-5 h-5" />
+              {state === 'Login' ? 'Sign in with Google' : 'Sign up with Google'}
+            </button>
+
+            {/* Alternative Action Toggle */}
+            <p className="text-center text-sm text-gray-500 mt-8">
+              {state === 'Login' ? "Don't have an account?" : "Already have an account?"}
+              <span
+                onClick={() => setState(state === 'Login' ? 'Sign Up' : 'Login')}
+                className="text-[#00B4B4] font-bold cursor-pointer hover:underline ml-1"
+              >
+                {state === 'Login' ? 'Sign up' : 'Sign in'}
+              </span>
+            </p>
+          </div>
+        </form>
+      </div>
+
+    </div>
   )
 }
 

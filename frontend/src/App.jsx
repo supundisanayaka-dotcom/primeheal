@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Doctors from "./pages/Doctors";
 import Login from "./pages/Login";
@@ -10,14 +10,21 @@ import MyAppointments from "./pages/MyAppointments";
 import Navbar from "./components/Navbar";
 import Appointment from "./pages/Appointment";
 import Footer from "./components/Footer";
+import { AppContext } from "./context/AppContext";
 
 
 const App = () => {
+  const { token } = useContext(AppContext);
+  const location = useLocation();
+
+  // Determine if we should display the clean, fullscreen login layout
+  const isLoginScreen = (location.pathname === '/' && !token) || location.pathname === '/login';
+
   return (
-    <div className="mx-4 sm:mx-[10%]">
-      <Navbar />
+    <div className={isLoginScreen ? "w-full min-h-screen bg-white" : "mx-4 sm:mx-[10%]"}>
+      {!isLoginScreen && <Navbar />}
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={token ? <Home /> : <Login />} />
         <Route path='/doctors' element={<Doctors />} />
         <Route path='/doctors/:speciality' element={<Doctors />} />
         <Route path='/login' element={<Login />} />
@@ -26,9 +33,8 @@ const App = () => {
         <Route path='/my-profile' element={<MyProfile />} />
         <Route path='/my-appointments' element={<MyAppointments />} />
         <Route path='/appointment/:docID' element={<Appointment />} />
-
       </Routes>
-      <Footer/>
+      {!isLoginScreen && <Footer />}
     </div>
   );
 };
