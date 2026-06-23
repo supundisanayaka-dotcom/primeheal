@@ -41,6 +41,14 @@ import login2 from './loging 02.jpeg'
 import login3 from './loging 03.png'
 import login4 from './loging 04.png'
 import google_logo from './google_logo.png'
+import header_img_01 from './header_img_01.png'
+import header_img_02 from './header_img_02.png'
+import header_img_03 from './header_img_03.png'
+import header_img_04 from './header_img_04.png'
+import header_img_05 from './header_img_05.png'
+import header_img_06 from './header_img_06.png'
+import header_img_07 from './header_img_07.png'
+import header_img_08 from './header_img_08.png'
 
 
 export const assets = {
@@ -65,7 +73,15 @@ export const assets = {
     login2,
     login3,
     login4,
-    google_logo
+    google_logo,
+    header_img_01,
+    header_img_02,
+    header_img_03,
+    header_img_04,
+    header_img_05,
+    header_img_06,
+    header_img_07,
+    header_img_08
 }
 
 export const specialityData = [

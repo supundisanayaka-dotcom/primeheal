@@ -32,6 +32,48 @@ const Login = () => {
     navigate('/')
   }
 
+  const handleGoogleLogin = () => {
+    // REPLACE WITH YOUR ACTUAL GOOGLE CLIENT ID FOR PRODUCTION DEPLOYMENT
+    const clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+
+    if (window.google && window.google.accounts) {
+      try {
+        const tokenClient = window.google.accounts.oauth2.initImplicitFlow({
+          client_id: clientId,
+          scope: 'openid email profile',
+          callback: (response) => {
+            if (response.access_token) {
+              // Successfully retrieved access token
+              fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${response.access_token}` }
+              })
+                .then(res => res.json())
+                .then(profile => {
+                  console.log('Google Profile Info:', profile);
+                  setToken(response.access_token);
+                  navigate('/');
+                })
+                .catch(err => {
+                  console.error('Error retrieving Google user info:', err);
+                  setToken(true);
+                  navigate('/');
+                });
+            }
+          },
+        });
+        tokenClient.requestAccessToken();
+      } catch (err) {
+        console.error('Google Sign-In execution error:', err);
+        setToken(true);
+        navigate('/');
+      }
+    } else {
+      console.warn('Google SDK not fully loaded. Falling back to simulated login.');
+      setToken(true);
+      navigate('/');
+    }
+  }
+
   return (
     <div className="w-full min-h-screen bg-white flex flex-col md:flex-row overflow-hidden transition-all duration-300">
       
@@ -173,10 +215,7 @@ const Login = () => {
             {/* Social Authentication Button */}
             <button
               type="button"
-              onClick={() => {
-                setToken(true)
-                navigate('/')
-              }}
+              onClick={handleGoogleLogin}
               className="w-full border border-gray-200 hover:bg-gray-50 active:scale-[0.98] text-gray-600 font-semibold py-3.5 rounded-xl mt-3 flex items-center justify-center gap-3 transition-all duration-150 text-sm"
             >
               <img src={assets.google_logo} alt="Google Logo" className="w-5 h-5" />

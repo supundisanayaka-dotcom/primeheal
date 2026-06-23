@@ -6,6 +6,21 @@ const MyAppointments = () => {
   const { doctors } = useContext(AppContext)
   const [appointments, setAppointments] = useState([])
 
+  // Payment Modal States
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [selectedApt, setSelectedApt] = useState(null)
+  
+  // Payment Form States
+  const [selectedCard, setSelectedCard] = useState('visa')
+  const [cardNumber, setCardNumber] = useState('•••• •••• •••• 9842')
+  const [expiry, setExpiry] = useState('08 / 19')
+  const [cardholderName, setCardholderName] = useState('Jeremiah Miroslavia')
+  const [cvv, setCvv] = useState('•••')
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  
+  // Payment Processing States
+  const [paymentStatus, setPaymentStatus] = useState('idle') // 'idle', 'processing', 'success'
+
   useEffect(() => {
     const storedApts = localStorage.getItem('appointments')
     if (storedApts) {
@@ -36,6 +51,39 @@ const MyAppointments = () => {
     )
     setAppointments(updated)
     localStorage.setItem('appointments', JSON.stringify(updated))
+  }
+
+  const openPaymentModal = (apt) => {
+    setSelectedApt(apt)
+    // Preset mock data from user's screen mockup
+    setSelectedCard('visa')
+    setCardNumber('•••• •••• •••• 9842')
+    setExpiry('08 / 19')
+    setCardholderName('Jeremiah Miroslavia')
+    setCvv('•••')
+    setTermsAccepted(false)
+    setPaymentStatus('idle')
+    setShowPaymentModal(true)
+  }
+
+  const handleMakePayment = (e) => {
+    e.preventDefault()
+    if (!termsAccepted) {
+      alert("Please accept the terms & conditions to proceed.")
+      return
+    }
+    
+    setPaymentStatus('processing')
+    
+    setTimeout(() => {
+      // Success transition: Update appointment status to Paid
+      const updated = appointments.map(apt => 
+        apt._id === selectedApt._id ? { ...apt, status: 'Paid' } : apt
+      )
+      setAppointments(updated)
+      localStorage.setItem('appointments', JSON.stringify(updated))
+      setPaymentStatus('success')
+    }, 1500)
   }
 
   return (
@@ -73,13 +121,19 @@ const MyAppointments = () => {
               </div>
               <div></div>
               <div className='flex flex-col gap-2 justify-end'>
-                {item.status === 'Cancelled' ? (
+                {item.status === 'Cancelled' && (
                   <button disabled className='text-sm text-red-500 text-center sm:min-w-48 py-2 border border-red-200 bg-red-50 rounded font-medium select-none'>
                     Cancelled
                   </button>
-                ) : (
+                )}
+                {item.status === 'Paid' && (
+                  <button disabled className='text-sm text-teal-600 text-center sm:min-w-48 py-2 border border-teal-200 bg-teal-50 rounded font-medium select-none'>
+                    Paid
+                  </button>
+                )}
+                {item.status !== 'Cancelled' && item.status !== 'Paid' && (
                   <>
-                    <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-primary hover:text-white transition-all duration-300 rounded'>
+                    <button onClick={() => openPaymentModal(item)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-primary hover:text-white transition-all duration-300 rounded'>
                       Pay Online
                     </button>
                     <button onClick={() => cancelAppointment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-[#FF9F68] hover:text-white transition-all duration-300 rounded'>
@@ -91,6 +145,258 @@ const MyAppointments = () => {
             </div>
           ))}
         </div>
+
+      {/* ---------- Payment Modal ---------- */}
+      {showPaymentModal && selectedApt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          
+          <div className="bg-white rounded-[24px] shadow-2xl w-full max-w-[900px] overflow-hidden flex flex-col md:flex-row border border-gray-100/80 relative transition-all duration-300">
+            
+            {/* Close Button */}
+            <button 
+              onClick={() => setShowPaymentModal(false)}
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 transition-colors z-30"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {paymentStatus === 'success' ? (
+              /* Success Screen */
+              <div className="w-full p-12 flex flex-col items-center justify-center text-center gap-4 bg-white min-h-[450px]">
+                <div className="w-20 h-20 bg-teal-50 rounded-full flex items-center justify-center text-teal-500 border border-teal-200 shadow-sm animate-pulse">
+                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-3xl font-extrabold text-gray-800 tracking-tight mt-2">Payment Successful!</h3>
+                <p className="text-gray-500 text-sm max-w-sm">
+                  Your payment for the appointment with <span className="font-semibold text-gray-700">{selectedApt.docName || selectedApt.name}</span> has been processed successfully.
+                </p>
+                <div className="bg-slate-50 border border-gray-100 rounded-xl p-4 w-full max-w-xs text-left text-xs text-gray-500 mt-4 space-y-1">
+                  <p><span className="font-semibold text-gray-700">Amount Paid:</span> ${(selectedApt.fees + 24.10).toFixed(2)} USD</p>
+                  <p><span className="font-semibold text-gray-700">Payment Mode:</span> {selectedCard.toUpperCase()} ending in {cardNumber.slice(-4)}</p>
+                </div>
+                <button
+                  onClick={() => setShowPaymentModal(false)}
+                  className="bg-[#00B4B4] hover:bg-[#009E9E] text-white font-semibold px-8 py-3 rounded-xl mt-6 transition-all duration-150 shadow-md shadow-[#00B4B4]/10 active:scale-95"
+                >
+                  Done
+                </button>
+              </div>
+            ) : paymentStatus === 'processing' ? (
+              /* Processing Loader */
+              <div className="w-full p-12 flex flex-col items-center justify-center text-center gap-4 bg-white min-h-[450px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent"></div>
+                <h3 className="text-xl font-bold text-gray-800 mt-2">Processing Payment...</h3>
+                <p className="text-gray-400 text-sm">Please do not close this window or refresh the page.</p>
+              </div>
+            ) : (
+              /* Form & Summary view */
+              <>
+                {/* Left side: Payment Options Form */}
+                <div className="w-full md:w-[60%] p-8 md:p-10 flex flex-col gap-6 bg-white justify-center">
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800">Payment Options</h2>
+                    
+                    {/* Sub-tabs */}
+                    <div className="flex gap-6 text-[10px] font-extrabold tracking-widest border-b border-gray-100 pb-3 mt-4 text-gray-400 uppercase">
+                      <span className="text-[#00B4B4] border-b-2 border-[#00B4B4] pb-3 cursor-pointer">Credit Card</span>
+                      <span className="cursor-not-allowed">Online Banking</span>
+                      <span className="cursor-not-allowed">Payment Partners</span>
+                    </div>
+                  </div>
+
+                  {/* Card selector */}
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCard('visa')}
+                      className={`flex-1 py-4 border rounded-xl flex items-center justify-center transition-all ${
+                        selectedCard === 'visa' ? 'border-[#00B4B4] bg-[#00B4B4]/5 ring-2 ring-[#00B4B4]/10 shadow-sm' : 'border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      <span className="text-[#1A1F71] font-black text-xl italic tracking-tight">VISA</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCard('mastercard')}
+                      className={`flex-1 py-4 border rounded-xl flex items-center justify-center transition-all ${
+                        selectedCard === 'mastercard' ? 'border-[#00B4B4] bg-[#00B4B4]/5 ring-2 ring-[#00B4B4]/10 shadow-sm' : 'border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 justify-center">
+                        <span className="w-4 h-4 rounded-full bg-[#EB001B] opacity-90 block"></span>
+                        <span className="w-4 h-4 rounded-full bg-[#F79E1B] opacity-90 block -ml-2.5"></span>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCard('amex')}
+                      className={`flex-1 py-4 border rounded-xl flex items-center justify-center transition-all ${
+                        selectedCard === 'amex' ? 'border-[#00B4B4] bg-[#00B4B4]/5 ring-2 ring-[#00B4B4]/10 shadow-sm' : 'border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      <span className="text-[#0070CD] font-extrabold text-lg italic tracking-wider">AMEX</span>
+                    </button>
+                  </div>
+
+                  {/* Input Fields */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Card Number */}
+                    <div className="col-span-2 relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                      <label className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Card Number</label>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <input
+                          type="text"
+                          required
+                          className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0"
+                          value={cardNumber}
+                          onChange={(e) => {
+                            let val = e.target.value;
+                            if (val.startsWith('••••')) val = '';
+                            setCardNumber(val);
+                          }}
+                          placeholder="•••• •••• •••• 9842"
+                        />
+                        <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <rect width="18" height="12" x="3" y="6" rx="2" strokeWidth="2"/>
+                          <path strokeWidth="2" d="M3 11h18"/>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Expiry Date */}
+                    <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                      <label className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Exp. Date</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                        value={expiry}
+                        onChange={(e) => setExpiry(e.target.value)}
+                        placeholder="MM / YY"
+                      />
+                    </div>
+
+                    {/* Cardholder Name */}
+                    <div className="col-span-2 relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                      <label className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Cardholder Name</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                        value={cardholderName}
+                        onChange={(e) => setCardholderName(e.target.value)}
+                        placeholder="Cardholder Name"
+                      />
+                    </div>
+
+                    {/* CVV */}
+                    <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                      <label className="block text-[10px] font-semibold text-gray-400 uppercase tracking-wider">CVV</label>
+                      <input
+                        type="password"
+                        required
+                        className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                        value={cvv}
+                        onChange={(e) => {
+                          let val = e.target.value;
+                          if (val.startsWith('•')) val = '';
+                          setCvv(val.substring(0, 3));
+                        }}
+                        placeholder="•••"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Terms */}
+                  <label className="flex items-center gap-2.5 cursor-pointer text-xs text-gray-500 select-none">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-gray-300 text-[#00B4B4] focus:ring-[#00B4B4]"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                    />
+                    <span>I accept the terms & conditions</span>
+                  </label>
+                </div>
+
+                {/* Right side: Booking Summary */}
+                <div className="w-full md:w-[40%] bg-slate-50 border-l border-gray-100 p-8 md:p-10 flex flex-col justify-between">
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-bold text-gray-800">Booking Summary</h3>
+
+                    {/* Price breakdown */}
+                    <div className="space-y-4 text-sm text-gray-500">
+                      <div className="flex justify-between">
+                        <span>Consultation Fee</span>
+                        <span className="font-semibold text-gray-700">${selectedApt.fees}.00</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Taxes & Fees</span>
+                        <span className="font-semibold text-gray-700">$20.00</span>
+                      </div>
+                      
+                      <hr className="border-gray-200" />
+                      
+                      <div className="flex justify-between font-bold text-gray-700">
+                        <span>Subtotal</span>
+                        <span>${selectedApt.fees + 20}.00</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Services Tax</span>
+                        <span className="font-semibold text-gray-700">$4.10</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 pt-6 border-t border-gray-200 space-y-6">
+                    {/* Grand Total */}
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Total USD</span>
+                      <span className="text-3xl font-extrabold text-[#00B4B4]">${(selectedApt.fees + 24.10).toFixed(2)}</span>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="space-y-3">
+                      <button
+                        type="button"
+                        onClick={handleMakePayment}
+                        className={`w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all duration-150 shadow-md ${
+                          termsAccepted
+                            ? 'bg-[#00B4B4] hover:bg-[#009E9E] shadow-[#00B4B4]/10 active:scale-[0.98]'
+                            : 'bg-gray-300 cursor-not-allowed shadow-none'
+                        }`}
+                      >
+                        <span>Make payment</span>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => alert(`Doctor: ${selectedApt.docName || selectedApt.name}\nSpeciality: ${selectedApt.docSpeciality || selectedApt.speciality}\nSlot Date: ${selectedApt.slotDate}\nSlot Time: ${selectedApt.slotTime}`)}
+                        className="w-full text-center text-xs text-gray-400 hover:text-gray-600 transition-colors font-semibold flex items-center justify-center gap-1.5 py-1"
+                      >
+                        <span>Booking info</span>
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
