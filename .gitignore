@@ -1,0 +1,18 @@
+# Environment variables
+.env
+.env.local
+
+# Database backups
+database/backups/
+*.sql.gz
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Node modules
+node_modules/
