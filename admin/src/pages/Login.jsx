@@ -26,7 +26,7 @@ const Login = () => {
     }
 
     if (state === "Admin") {
-      const success = adminLogin(email, password);
+      const success = await adminLogin(email, password);
       if (success) {
         navigate("/admin-dashboard");
       } else {

@@ -7,14 +7,26 @@ const AdminContextProvider = ({ children }) => {
     localStorage.getItem("adminToken") || ""
   );
 
-  const login = (email, password) => {
-    if (email === "admin@primeheal.com" && password === "admin") {
-      const token = "mock-admin-token-12345";
-      setAdminToken(token);
-      localStorage.setItem("adminToken", token);
-      return true;
+  const login = async (email, password) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success && data.user.userType === 'admin') {
+        setAdminToken(data.token);
+        localStorage.setItem("adminToken", data.token);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
-    return false;
   };
 
   const logout = () => {

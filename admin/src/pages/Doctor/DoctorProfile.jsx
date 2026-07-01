@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { AppContext } from "../../context/AppContext";
+import { updateDoctorProfile } from "../../services/api";
 
 const DoctorProfile = () => {
   const { currentDoctorId } = useContext(DoctorContext);
@@ -38,33 +39,43 @@ const DoctorProfile = () => {
     );
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setNotification("");
     if (!fees || !address1 || !about) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    setDoctors((prev) =>
-      prev.map((doc) =>
-        doc._id === currentDoctorId
-          ? {
-              ...doc,
-              fees: Number(fees),
-              about,
-              available,
-              address: { line1: address1, line2: address2 }
-            }
-          : doc
-      )
-    );
+    try {
+      const doctorData = {
+        fees: Number(fees),
+        about,
+        available,
+        address: { line1: address1, line2: address2 }
+      };
 
-    setNotification("Profile details saved successfully!");
-    setIsEdit(false);
+      const res = await updateDoctorProfile(currentDoctorId, doctorData);
+      
+      if (res.success) {
+        setDoctors((prev) =>
+          prev.map((doc) =>
+            doc._id === currentDoctorId
+              ? { ...doc, ...doctorData }
+              : doc
+          )
+        );
 
-    setTimeout(() => {
-      setNotification("");
-    }, 3000);
+        setNotification("Profile details saved successfully!");
+        setIsEdit(false);
+
+        setTimeout(() => {
+          setNotification("");
+        }, 3000);
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Failed to update profile");
+    }
   };
 
   return (

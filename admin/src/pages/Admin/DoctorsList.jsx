@@ -1,13 +1,22 @@
 import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
+import { toggleDoctorAvailability } from "../../services/api";
 
 const DoctorsList = () => {
   const { doctors, setDoctors } = useContext(AppContext);
 
-  const toggleAvailability = (docId) => {
-    setDoctors((prev) =>
-      prev.map((doc) => (doc._id === docId ? { ...doc, available: !doc.available } : doc))
-    );
+  const toggleAvailability = async (docId) => {
+    try {
+      const res = await toggleDoctorAvailability(docId);
+      if (res.success) {
+        setDoctors((prev) =>
+          prev.map((doc) => (doc._id === docId ? { ...doc, available: !doc.available } : doc))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to toggle availability:", err);
+      alert("Failed to toggle availability");
+    }
   };
 
   return (

@@ -13,7 +13,7 @@ const Navbar = () => {
   const [showSearchModal, setShowSearchModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
-  const { token, setToken, doctors } = useContext(AppContext)
+  const { token, setToken, doctors, userData } = useContext(AppContext)
 
   // Get unique categories/specialties from doctors list
   const allCategories = doctors ? Array.from(new Set(doctors.map(doc => doc.speciality))) : [];
@@ -75,7 +75,7 @@ const Navbar = () => {
 
         {token ? (
           <div className='flex items-center gap-2 cursor-pointer group relative'>
-            <img className='w-8 h-8 rounded-full border border-white/20 object-cover bg-blue-50' src={avatar_blue_hair} alt="Profile" />
+            <img className='w-8 h-8 rounded-full border border-white/20 object-cover bg-blue-50' src={userData?.profileImage || avatar_blue_hair} alt="Profile" />
             <img className='w-2.5' src={assets.dropdown_icon} alt="Dropdown" />
 
             {/* Dropdown */}
@@ -84,14 +84,14 @@ const Navbar = () => {
 
                 {/* Avatar with circular outline */}
                 <div className="w-20 h-20 rounded-full border-2 border-white/90 p-0.5 overflow-hidden shadow-lg bg-slate-850">
-                  <img className="w-full h-full rounded-full object-cover" src={avatar_blue_hair} alt="Avatar" />
+                  <img className="w-full h-full rounded-full object-cover" src={userData?.profileImage || avatar_blue_hair} alt="Avatar" />
                 </div>
 
                 {/* Profile Details */}
                 <div>
-                  <h3 className="font-bold text-lg tracking-wide text-white">Kasun Dilanka</h3>
+                  <h3 className="font-bold text-lg tracking-wide text-white">{userData?.name || 'Loading...'}</h3>
                   <p className="text-[10px] text-slate-300 font-light mt-1 max-w-[200px] leading-relaxed">
-                    "Designer who creates delightful experiences"
+                    {userData?.email || ''}
                   </p>
                 </div>
 
@@ -127,7 +127,10 @@ const Navbar = () => {
 
                 {/* White Pill Logout Button */}
                 <button
-                  onClick={() => setToken(false)}
+                  onClick={() => {
+                    setToken(false)
+                    localStorage.removeItem('token')
+                  }}
                   className="w-full py-3 mt-1 bg-white hover:bg-slate-100 text-slate-900 font-semibold rounded-2xl hover:scale-[1.02] active:scale-95 transition-all text-sm flex items-center justify-center gap-2 shadow-lg"
                 >
                   <svg className="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

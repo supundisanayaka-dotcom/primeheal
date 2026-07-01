@@ -1,254 +1,27 @@
 import React, { createContext, useState } from "react";
 import { assets } from "../assets/assets";
+import { getDoctors } from "../services/api";
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
   const currencySymbol = "$";
 
-  // Rich list of doctors with professional Unsplash avatars to ensure premium aesthetics
-  const [doctors, setDoctors] = useState([
-    {
-      _id: "doc1",
-      name: "Dr. Richard James",
-      email: "richard@primeheal.com",
-      image: assets.doc1,
-      speciality: "General physician",
-      degree: "MBBS",
-      experience: "4 Years",
-      about: "Dr. Richard James is dedicated to providing comprehensive medical care, with a strong focus on preventive health, early diagnosis, and personalized wellness plans tailored to each individual.",
-      fees: 50,
-      available: true,
-      address: {
-        line1: "17th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
+  const [doctors, setDoctors] = useState([]);
+
+  React.useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const data = await getDoctors();
+        if (data.success) {
+          setDoctors(data.doctors);
+        }
+      } catch (error) {
+        console.error("Failed to fetch doctors:", error);
       }
-    },
-    {
-      _id: "doc2",
-      name: "Dr. Emily Larson",
-      email: "emily@primeheal.com",
-      image: assets.doc2,
-      speciality: "Gynecologist",
-      degree: "MBBS, MD",
-      experience: "3 Years",
-      about: "Dr. Emily Larson focuses on women's healthcare, offering exceptional prenatal care, gynecological evaluations, and supportive consultations across all stages of life.",
-      fees: 60,
-      available: true,
-      address: {
-        line1: "27th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc3",
-      name: "Dr. Sarah Patel",
-      email: "sarah@primeheal.com",
-      image: assets.doc3,
-      speciality: "Dermatologist",
-      degree: "MBBS",
-      experience: "1 Year",
-      about: "Dr. Sarah Patel provides comprehensive skin diagnostics, dermatological procedures, and aesthetic plans, prioritizing clinical safety and radiant skin health.",
-      fees: 30,
-      available: true,
-      address: {
-        line1: "37th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc4",
-      name: "Dr. Christopher Lee",
-      email: "christopher@primeheal.com",
-      image: assets.doc4,
-      speciality: "Pediatricians",
-      degree: "MBBS, DCH",
-      experience: "2 Years",
-      about: "Dr. Christopher Lee is highly committed to pediatric care, offering friendly childhood evaluations, immunizations, and developmental tracking in a welcoming environment.",
-      fees: 40,
-      available: true,
-      address: {
-        line1: "47th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc5",
-      name: "Dr. Jennifer Garcia",
-      email: "jennifer@primeheal.com",
-      image: assets.doc5,
-      speciality: "Neurologist",
-      degree: "MBBS, DM",
-      experience: "4 Years",
-      about: "Dr. Jennifer Garcia specializes in complex neurological diagnostics, stroke preventions, headache managements, and cutting-edge therapeutics.",
-      fees: 50,
-      available: false,
-      address: {
-        line1: "57th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc6",
-      name: "Dr. Andrew Williams",
-      email: "andrew@primeheal.com",
-      image: assets.doc6,
-      speciality: "Gastroenterologist",
-      degree: "MBBS",
-      experience: "4 Years",
-      about: "Dr. Andrew Williams focuses on digestive disorders, liver health management, endoscopies, and promoting optimal digestive well-being.",
-      fees: 50,
-      available: true,
-      address: {
-        line1: "67th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc7",
-      name: "Dr. Christopher Davis",
-      email: "christopher.d@primeheal.com",
-      image: assets.doc7,
-      speciality: "General physician",
-      degree: "MBBS",
-      experience: "4 Years",
-      about: "Dr. Christopher Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.",
-      fees: 50,
-      available: true,
-      address: {
-        line1: "17th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc8",
-      name: "Dr. Timothy White",
-      email: "timothy@primeheal.com",
-      image: assets.doc8,
-      speciality: "Gynecologist",
-      degree: "MBBS",
-      experience: "3 Years",
-      about: "Dr. Timothy White is dedicated to women's healthcare, offering exceptional prenatal care, gynecological evaluations, and supportive consultations across all stages of life.",
-      fees: 60,
-      available: true,
-      address: {
-        line1: "27th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc9",
-      name: "Dr. Ava Mitchell",
-      email: "ava@primeheal.com",
-      image: assets.doc9,
-      speciality: "Dermatologist",
-      degree: "MBBS",
-      experience: "1 Year",
-      about: "Dr. Ava Mitchell provides comprehensive skin diagnostics, dermatological procedures, and aesthetic plans, prioritizing clinical safety and radiant skin health.",
-      fees: 30,
-      available: true,
-      address: {
-        line1: "37th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc10",
-      name: "Dr. Jeffrey King",
-      email: "jeffrey@primeheal.com",
-      image: assets.doc10,
-      speciality: "Pediatricians",
-      degree: "MBBS",
-      experience: "2 Years",
-      about: "Dr. Jeffrey King is highly committed to pediatric care, offering friendly childhood evaluations, immunizations, and developmental tracking in a welcoming environment.",
-      fees: 40,
-      available: true,
-      address: {
-        line1: "47th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc11",
-      name: "Dr. Zoe Kelly",
-      email: "zoe@primeheal.com",
-      image: assets.doc11,
-      speciality: "Neurologist",
-      degree: "MBBS",
-      experience: "4 Years",
-      about: "Dr. Zoe Kelly specializes in complex neurological diagnostics, stroke preventions, headache managements, and cutting-edge therapeutics.",
-      fees: 50,
-      available: true,
-      address: {
-        line1: "57th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc12",
-      name: "Dr. Patrick Harris",
-      email: "patrick@primeheal.com",
-      image: assets.doc12,
-      speciality: "Gastroenterologist",
-      degree: "MBBS",
-      experience: "4 Years",
-      about: "Dr. Patrick Harris is dedicated to providing comprehensive gastroenterological care and rehabilitation plans, prioritizing clinical safety and healthy recovery.",
-      fees: 50,
-      available: true,
-      address: {
-        line1: "57th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc13",
-      name: "Dr. Chloe Evans",
-      email: "chloe@primeheal.com",
-      image: assets.doc13,
-      speciality: "General physician",
-      degree: "MBBS",
-      experience: "4 Years",
-      about: "Dr. Chloe Evans has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.",
-      fees: 50,
-      available: true,
-      address: {
-        line1: "17th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc14",
-      name: "Dr. Ryan Martinez",
-      email: "ryan@primeheal.com",
-      image: assets.doc14,
-      speciality: "Gynecologist",
-      degree: "MBBS",
-      experience: "3 Years",
-      about: "Dr. Ryan Martinez focuses on women's healthcare, offering exceptional prenatal care, gynecological evaluations, and supportive consultations.",
-      fees: 60,
-      available: true,
-      address: {
-        line1: "27th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    },
-    {
-      _id: "doc15",
-      name: "Dr. Amelia Hill",
-      email: "amelia@primeheal.com",
-      image: assets.doc15,
-      speciality: "Dermatologist",
-      degree: "MBBS",
-      experience: "1 Year",
-      about: "Dr. Amelia Hill provides comprehensive skin diagnostics, dermatological procedures, and aesthetic plans, prioritizing clinical safety and skin health.",
-      fees: 30,
-      available: true,
-      address: {
-        line1: "37th Cross, Richmond",
-        line2: "Circle, Ring Road, London"
-      }
-    }
-  ]);
+    };
+    fetchDoctors();
+  }, []);
 
   const getFormattedDate = (offsetDays = 0) => {
     const months = [

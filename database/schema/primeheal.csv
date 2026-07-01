@@ -1,0 +1,119 @@
+"accountantID","userID","accountingLicense","department"
+"1","12","ICASL-9876","Finance"
+"adminID","userID","permissions","accessLevel"
+"1","13","{""manage_users"": true, ""view_reports"": true, ""manage_settings"": true, ""handle_complaints"": true}","super"
+"appointmentID","patientID","doctorID","receptionistID","appointmentDate","appointmentTime","duration","consultationFee","status","reason","doctorNotes","checkedIn","checkedInTime","createdAt","updatedAt","reminder_sent","reminder_sent_at"
+"1","1","1","1","2024-11-15","09:00:00","30","3500.00","completed","Chest pain and shortness of breath","ECG performed. Prescribed beta-blockers. Follow-up in 2 weeks.","1","2024-11-15 08:55:00","2024-11-10 10:30:00","2025-12-07 21:54:43","0",NULL
+"2","2","2","1","2024-11-20","08:30:00","30","2500.00","cancelled","Child vaccination - MMR","MMR vaccine administered. No adverse reactions. Next visit in 1 month.","1","2024-11-20 08:25:00","2024-11-15 14:20:00","2026-04-02 22:45:50","0",NULL
+"3","3","3",NULL,"2024-11-25","16:00:00","20","2000.00","completed","Fever and cold for 3 days","Viral infection. Prescribed paracetamol and rest. Return if fever persists.","1","2024-11-25 15:58:00","2024-11-24 09:45:00","2025-12-07 21:54:43","0",NULL
+"4","4","4","1","2024-12-10","10:00:00","30","3000.00","confirmed","Acne treatment consultation",NULL,"0",NULL,"2024-12-01 11:30:00","2025-12-07 21:54:43","0",NULL
+"5","5","1",NULL,"2024-12-12","09:30:00","30","3500.00","confirmed","Follow-up for hypertension",NULL,"0",NULL,"2024-12-02 16:45:00","2025-12-07 21:54:43","0",NULL
+"6","1","3","1","2024-12-15","16:00:00","20","2000.00","confirmed","General checkup",NULL,"0",NULL,"2024-12-05 10:00:00","2025-12-07 21:54:43","0",NULL
+"7","2","4",NULL,"2024-12-18","11:00:00","30","3000.00","pending","Skin rash evaluation",NULL,"0",NULL,"2024-12-06 13:20:00","2025-12-07 21:54:43","0",NULL
+"8","3","2",NULL,"2024-12-08","08:00:00","30","2500.00","cancelled","Child health checkup - patient requested cancellation",NULL,"0",NULL,"2024-11-30 09:15:00","2025-12-07 21:54:43","0",NULL
+"10","1","2",NULL,"2026-04-10","00:00:00","30","0.00","pending","Fever check",NULL,"0",NULL,"2026-04-02 06:00:20","2026-04-02 06:00:20","0",NULL
+"12","1","1",NULL,"2026-04-15","00:00:00","30","0.00","pending","General checkup",NULL,"0",NULL,"2026-04-02 22:30:06","2026-04-14 13:44:42","1","2026-04-14 13:44:42"
+"13","1","1",NULL,"2026-04-15","00:00:00","30","0.00","pending","General checkup",NULL,"0",NULL,"2026-04-02 22:32:37","2026-04-14 13:44:48","1","2026-04-14 13:44:48"
+"15","6","5","1","2026-04-15","13:00:00","30","2500.00","pending","General checkup",NULL,"0",NULL,"2026-04-14 00:49:30","2026-04-14 13:44:51","1","2026-04-14 13:44:51"
+"complaintID","userID","complaintType","description","status","assignedToAdminID","resolution","createdAt","resolvedAt"
+"1","3","service","Had to wait for 45 minutes beyond my appointment time on November 25th. Would appreciate better time management.","in-progress","1",NULL,"2024-11-26 15:30:00",NULL
+"2","5","technical","Unable to reschedule my appointment online. The button is not working on mobile.","resolved","1","Apologized and rescheduled appointment","2024-12-01 10:00:00","2026-04-04 10:00:16"
+"3","5","service","Doctor was late","open",NULL,NULL,"2026-04-03 23:42:08",NULL
+"4","5","service","Doctor was so curious","open",NULL,NULL,"2026-04-03 23:42:29",NULL
+"doctorID","userID","specialization","licenseNumber","qualifications","bio","consultationFee","averageRating","totalPatients","isAvailable"
+"1","6","Cardiologist","SLMC-12345","MBBS, MD (Cardiology)","Specialist in heart diseases with 15 years of experience","3500.00","5.00","120","1"
+"2","7","Pediatrician","SLMC-23456","MBBS, DCH, MD (Pediatrics)","Child health specialist with expertise in infant care","2500.00","5.00","200","1"
+"3","8","General Physician","SLMC-34567","MBBS, MD","General medicine practitioner for all age groups","2000.00","4.00","350","1"
+"4","9","Dermatologist","SLMC-45678","MBBS, MD (Dermatology)","Skin specialist with focus on cosmetic dermatology","3000.00","4.70","180","1"
+"5","26","Cardiogist","SLMC-9999","MBBS","Heart Specilist","0.00","0.00","0","1"
+"availabilityID","doctorID","dayOfWeek","startTime","endTime","slotDuration","maxAppointmentsPerSlot","recurring","specificDate","isActive"
+"1","1","Tuesday","09:00:00","12:00:00","30","3","1",NULL,"1"
+"2","1","Monday","14:00:00","17:00:00","30","1","1",NULL,"1"
+"3","1","Wednesday","09:00:00","12:00:00","30","1","1",NULL,"1"
+"4","1","Friday","09:00:00","12:00:00","30","1","1",NULL,"1"
+"6","2","Thursday","08:00:00","13:00:00","30","1","1",NULL,"1"
+"7","2","Saturday","08:00:00","12:00:00","30","1","1",NULL,"1"
+"8","3","Monday","16:00:00","20:00:00","20","1","1",NULL,"1"
+"9","3","Tuesday","16:00:00","20:00:00","20","1","1",NULL,"1"
+"10","3","Wednesday","16:00:00","20:00:00","20","1","1",NULL,"1"
+"11","3","Thursday","16:00:00","20:00:00","20","1","1",NULL,"1"
+"12","3","Friday","16:00:00","20:00:00","20","1","1",NULL,"1"
+"13","4","Monday","10:00:00","14:00:00","30","1","1",NULL,"1"
+"14","4","Wednesday","10:00:00","14:00:00","30","1","1",NULL,"1"
+"15","4","Friday","15:00:00","18:00:00","30","1","1",NULL,"1"
+"16","1","Monday","09:00:00","12:00:00","30","3","1",NULL,"1"
+"17","5","Monday","09:00:00","12:00:00","30","1","1",NULL,"1"
+"feedbackID","appointmentID","patientID","doctorID","rating","comments","createdAt","isVisible","isApproved"
+"1","1","1","1","5","Excellent doctor! Very thorough examination and clear explanation of the treatment plan.","2024-11-16 10:00:00","1","1"
+"2","2","2","2","5","Dr. Kamala is wonderful with children. My son felt comfortable throughout the visit.","2024-11-21 14:30:00","1","1"
+"3","3","3","3","4","Good service, but had to wait a bit longer than expected. Doctor was helpful though.","2024-11-26 09:00:00","1","1"
+"4","1","1","1","5","Very good doctor and helpful consultation.","2026-04-03 19:35:43","1","0"
+"invoiceID","appointmentID","patientID","invoiceNumber","subtotal","tax","discount","totalAmount","issueDate","dueDate","status"
+"1","1","1","INV-2024-000001","3500.00","0.00","0.00","3500.00","2024-11-15","2024-12-15","paid"
+"2","2","2","INV-2024-000002","2500.00","0.00","100.00","2400.00","2024-11-20","2024-12-20","paid"
+"3","3","3","INV-2024-000003","2000.00","0.00","0.00","2000.00","2024-11-25","2024-12-25","paid"
+"4","4","4","INV-2024-000004","3000.00","0.00","0.00","3000.00","2024-12-10","2025-01-10","issued"
+"5","5","5","INV-2024-000005","3500.00","0.00","0.00","3500.00","2024-12-12","2025-01-12","issued"
+"6","2","2","INV-1775313131982","2500.00","0.00","0.00","2500.00","2026-04-04","2026-04-30",
+"7","15","6","INV-1782076365939","2500.00","0.00","0.00","2500.00","2026-06-22","2026-07-01","issued"
+"8","15","6","INV-1782076372422","2500.00","0.00","0.00","2500.00","2026-06-22","2026-07-01","issued"
+"11","15","6","INV-1782077397057","2500.00","0.00","0.00","2500.00","2026-06-22","2026-07-01","issued"
+"reportID","appointmentID","patientID","doctorID","reportType","diagnosis","prescription","labResults","reportDate","fileURL"
+"1","1","1","1","Cardiology Consultation","Mild hypertension with occasional chest discomfort","Metoprolol 50mg - Once daily
+Aspirin 75mg - Once daily
+Lifestyle modifications recommended","ECG: Sinus rhythm, no acute changes
+Blood Pressure: 145/92 mmHg","2024-11-15","/reports/2024/11/report_001.pdf"
+"2","2","2","2","Vaccination Record","Routine MMR vaccination","N/A - Vaccination administered","Pre-vaccination vitals normal
+Post-vaccination observation: 30 minutes, no adverse effects","2024-11-20","/reports/2024/11/report_002.pdf"
+"3","3","3","3","General Consultation","Upper respiratory tract infection (viral)","Paracetamol 500mg - Three times daily for 3 days
+Plenty of fluids and rest
+Return if fever persists beyond 3 days","Temperature: 38.2°C
+Throat: Mild erythema
+Lungs: Clear","2024-11-25","/reports/2024/11/report_003.pdf"
+"notificationID","userID","appointmentID","message","notificationDate","notificationType","status","recipientEmail","retryCount"
+"1","1","1","Your appointment with Dr. Nimal Bandara is confirmed for November 15, 2024 at 9:00 AM","2024-11-14 18:00:00","email","sent","john.silva@email.com","0"
+"2","1","1","Reminder: Your appointment is tomorrow at 9:00 AM with Dr. Nimal Bandara","2024-11-14 20:00:00","email","sent","john.silva@email.com","0"
+"3","2","2","Your appointment with Dr. Kamala Wijesinghe is confirmed for November 20, 2024 at 8:30 AM","2024-11-19 18:00:00","email","sent","mary.perera@email.com","0"
+"4","4","4","Your appointment with Dr. Priya Mendis is confirmed for December 10, 2024 at 10:00 AM","2024-12-09 18:00:00","email","pending","sarah.j@email.com","0"
+"5","3","8","Your appointment on December 8, 2024 has been cancelled as per your request","2024-11-30 10:00:00","email","sent","david.fernando@email.com","0"
+"patientID","userID","dateOfBirth","address","emergencyContact","allergies"
+"1","1","1990-05-15","123, Galle Road, Colombo 03","071-9999999","Penicillin"
+"2","2","1985-08-22","456, Kandy Road, Kandy","077-8888888","None"
+"3","3","1995-03-10","789, Negombo Road, Negombo","076-7777777","Pollen, Dust"
+"4","4","1992-11-30","321, Gampaha Road, Gampaha","070-6666666","Latex"
+"5","5","1988-07-18","654, Matara Road, Matara","071-5555555","Aspirin"
+"6","30","1998-06-15","No275,Pahala Thalgodapitiya,Ibbagamuwa,Kurunegala","0712345678","None"
+"7","31",NULL,NULL,NULL,NULL
+"8","32",NULL,NULL,NULL,NULL
+"paymentID","appointmentID","invoiceID","accountantID","amount","refundAmount","paymentMethod","paymentDate","status","transactionID","paymentGatewayResponse"
+"1","1","1","1","3500.00","0.00","card","2024-11-15 09:45:00","completed","TXN-001-2024-1115",NULL
+"2","2","2","1","2400.00","0.00","online","2024-11-20 09:00:00","completed","PAYHERE-20241120-9876",NULL
+"3","3","3","1","2000.00","0.00","cash","2024-11-25 16:30:00","completed",NULL,NULL
+"4","2","2","1","2500.00","0.00","card","2026-04-05 14:41:59","completed","TXN-1775380319098",NULL
+"receptionistID","userID","shiftTime","department"
+"1","10","Morning (8:00 AM - 2:00 PM)","Front Desk"
+"settingID","settingName","settingValue","category","description","updatedAt","updatedByAdminID"
+"1","appointment_slot_duration","30","appointment","Default appointment slot duration in minutes","2025-12-07 21:24:49",NULL
+"2","max_appointments_per_slot","1","appointment","Maximum number of appointments per time slot","2025-12-07 21:24:49",NULL
+"3","consultation_fee_tax_rate","0","billing","Tax rate percentage for consultation fees","2025-12-07 21:24:49",NULL
+"4","appointment_cancellation_hours","24","appointment","Minimum hours before appointment for cancellation","2025-12-07 21:24:49",NULL
+"5","system_email","admin@primeheal.com","notification","System email address for notifications","2025-12-07 21:24:49",NULL
+"6","notification_retry_limit","3","notification","Maximum retry attempts for failed notifications","2025-12-07 21:24:49",NULL
+"userID","name","email","password","phone","userType","isActive","createdAt","updatedAt","mustChangePassword","resetToken","resetTokenExpires"
+"1","John De Silva","john.desilva@email.com","1234","0742654555","patient","1","2025-12-07 21:54:43","2026-04-03 19:11:37","0",NULL,NULL
+"2","Mary Perera","mary.perera@email.com","$2a$10$samplehash2","077-2345678","patient","1","2025-12-07 21:54:43","2025-12-07 21:54:43","0",NULL,NULL
+"3","David Fernando","david.fernando@email.com","$2a$10$samplehash3","076-3456789","patient","1","2025-12-07 21:54:43","2025-12-07 21:54:43","0",NULL,NULL
+"4","Sarah Jayasinghe","sarah.j@email.com","$2a$10$samplehash4","070-4567890","patient","1","2025-12-07 21:54:43","2025-12-07 21:54:43","0",NULL,NULL
+"5","Mike Rajapaksa","mike.r@email.com","mike4545","071-5678901","patient","1","2025-12-07 21:54:43","2026-04-03 23:20:42","0",NULL,NULL
+"6","Dr. Nimal Bandara","dr.nimal@primeheal.com","5678","071-7777777","doctor","1","2025-12-07 21:54:43","2026-04-03 22:45:40","0",NULL,NULL
+"7","Dr. Kamala Wijesinghe","dr.kamala@primeheal.com","$2a$10$samplehash7","077-8888888","doctor","1","2025-12-07 21:54:43","2025-12-07 21:54:43","0",NULL,NULL
+"8","Dr. Sunil Gunasekara","dr.sunil@primeheal.com","$2a$10$samplehash8","076-9999999","doctor","1","2025-12-07 21:54:43","2025-12-07 21:54:43","0",NULL,NULL
+"9","Dr. Priya Mendis","dr.priya@primeheal.com","$2a$10$samplehash9","070-1111111","doctor","1","2025-12-07 21:54:43","2025-12-07 21:54:43","0",NULL,NULL
+"10","Sanduni Kumari","sanduni@primeheal.com","sanduni123","071-2222222","receptionist","1","2025-12-07 21:54:43","2026-04-02 19:15:58","0",NULL,NULL
+"12","Ruwan De Silva","ruwan@primeheal.com","ruwan123","076-4444444","admin","1","2025-12-07 21:54:43","2026-06-22 02:32:34","0",NULL,NULL
+"13","Admin User","admin@primeheal.com","$2b$10$jt2x9JgEc9ZeJ.zAT3PS9eFFgzpEgctsSPnahNaImagYzN3mghonq","071-0000000","admin","1","2025-12-07 21:54:43","2026-04-13 15:24:55","0",NULL,NULL
+"25","Dr Esandi Nishshanka","esandinishshanka194@gmail.com","$2b$10$TFxBAwG.N6TNh5rT7bMr8eO6pbw4uBm50NOd1TRn68XnANRvb72BO","0771234567","doctor","1","2026-04-13 15:30:34","2026-04-13 21:17:47","0",NULL,NULL
+"26","Chelaka Nishshanka","manujachelaka@gmail.com","$2b$10$1jfsCpMPsCbqphKIsHAYk.bgwxQc0aelfTQw4QPb57lXO6Js7GhTi","0771234567","doctor","1","2026-04-14 00:18:33","2026-04-14 15:05:16","0",NULL,NULL
+"30","Kamal Perera","manujanissanka400@gmail.com","$2b$10$DUcxBuX9tKXtedHrkd8FKuvoOW.Hnh5Ikp0f79kDZa5CnZDYNhkLK","0771234567","patient","1","2026-04-14 00:38:07","2026-04-14 00:38:07","0",NULL,NULL
+"31","Samith Perera","samithp2002@email.com","$2b$10$KrNsps.1WXyHQO/WWvh8Wu7JK6SGUSM8YtPvxO0uWerxCLmZqH8TW","0771234567","patient","1","2026-05-29 20:08:43","2026-05-29 20:08:43","0",NULL,NULL
+"32","Sanka Perera","sanka@primeheal.com","$2b$10$QxfFuGLRZ452wwhwIAWd3eKAPEknadirOzOG62YawBVz4uO80ZcSK","0771234567","admin","1","2026-06-22 02:36:21","2026-06-22 02:36:43","0",NULL,NULL

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { addDoctorAPI } from "../../services/api";
 
 const AddDoctor = () => {
   const { setDoctors } = useContext(AppContext);
@@ -39,47 +40,49 @@ const AddDoctor = () => {
       return;
     }
 
-    // Dynamic new doctor object
-    const newDoc = {
-      _id: `doc_${Date.now()}`,
+    // Map state to what the API expects (using FormData for image upload or just passing the object if no image)
+    const doctorData = {
       name: `Dr. ${name}`,
       email,
-      image: docImg
-        ? URL.createObjectURL(docImg)
-        : "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400",
+      password,
       speciality,
       degree,
       experience,
       about,
       fees: Number(fees),
-      available: true,
       address: {
         line1: address1,
         line2: address2 || "Circle, London"
       }
     };
 
-    setDoctors((prev) => [...prev, newDoc]);
+    // If API supports image upload via multer we'd use FormData, but for now we just assume basic JSON
+    addDoctorAPI(doctorData).then((res) => {
+      if (res.success) {
+        setSuccessMsg("Doctor successfully added to the roster!");
+        // Refresh doctors list if we are still using context for the list
+        // Clear state
+        setDocImg(null);
+        setName("");
+        setEmail("");
+        setPassword("");
+        setExperience("1 Year");
+        setFees("");
+        setSpeciality("General physician");
+        setDegree("");
+        setAddress1("");
+        setAddress2("");
+        setAbout("");
 
-    setSuccessMsg("Doctor successfully added to the roster!");
-    
-    // Clear state
-    setDocImg(null);
-    setName("");
-    setEmail("");
-    setPassword("");
-    setExperience("1 Year");
-    setFees("");
-    setSpeciality("General physician");
-    setDegree("");
-    setAddress1("");
-    setAddress2("");
-    setAbout("");
-
-    // Automatically transition to list after 1.5 seconds
-    setTimeout(() => {
-      navigate("/doctors-list");
-    }, 1500);
+        // Automatically transition to list after 1.5 seconds
+        setTimeout(() => {
+          navigate("/doctors-list");
+        }, 1500);
+      }
+    }).catch(err => {
+      setErrorMsg(err.response?.data?.message || "Failed to add doctor.");
+      console.error(err);
+    });
   };
 
   return (

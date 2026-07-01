@@ -1,17 +1,65 @@
-import { createContext, useState } from "react";
-import { doctors } from "../assets/assets";
+import { createContext, useState, useEffect } from "react";
+import { getDoctors, getUserProfile } from "../services/api";
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
   const currencySymbol = '$'  
-  const [token, setToken] = useState(false)
+  const [token, setToken] = useState(localStorage.getItem('token') || false)
+  const [userData, setUserData] = useState(false)
+  const [doctors, setDoctors] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchDoctorsData = async () => {
+    try {
+      const data = await getDoctors();
+      if (data.success) {
+        setDoctors(data.doctors);
+      }
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const loadUserProfile = async () => {
+    if (token) {
+      try {
+        const data = await getUserProfile();
+        if (data.success) {
+          setUserData(data.profile);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        // If unauthorized, token might be invalid
+        if (error.response && error.response.status === 401) {
+          setToken(false);
+          localStorage.removeItem('token');
+        }
+      }
+    } else {
+      setUserData(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchDoctorsData();
+  }, [])
+
+  useEffect(() => {
+    loadUserProfile();
+  }, [token])
 
   const value = {
     doctors,
     currencySymbol,
     token,
-    setToken
+    setToken,
+    userData,
+    setUserData,
+    loadUserProfile,
+    fetchDoctorsData
   };
 
   return (

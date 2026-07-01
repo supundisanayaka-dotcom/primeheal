@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import { useNavigate } from 'react-router-dom'
+import { loginUser, registerUser } from '../services/api'
 
 const Login = () => {
   const { setToken } = useContext(AppContext)
@@ -29,11 +30,30 @@ const Login = () => {
     return () => clearInterval(interval)
   }, [loginImages.length])
 
+
+
   const onSubmitHandler = async (event) => {
     event.preventDefault()
-    // Simulated authentication
-    setToken(true)
-    navigate('/')
+    try {
+      if (state === 'Login') {
+        const data = await loginUser(email, password)
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+          navigate('/')
+        }
+      } else {
+        const data = await registerUser(name, email, password)
+        if (data.success) {
+          localStorage.setItem('token', data.token)
+          setToken(data.token)
+          navigate('/')
+        }
+      }
+    } catch (error) {
+      console.error(error)
+      alert(error.response?.data?.message || 'Authentication failed')
+    }
   }
 
   const handleGoogleLogin = () => {
