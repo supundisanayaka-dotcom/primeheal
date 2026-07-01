@@ -14,8 +14,12 @@ api.interceptors.request.use(
   (config) => {
     let token = '';
     // Determine which token to use based on the path or just try all
-    // Since admin apps might have different contexts, they might store it as aToken, dToken, etc.
-    if (localStorage.getItem('aToken')) token = localStorage.getItem('aToken');
+    // Since admin apps might have different contexts, they might store it as adminToken, doctorToken, etc.
+    if (localStorage.getItem('adminToken')) token = localStorage.getItem('adminToken');
+    else if (localStorage.getItem('doctorToken')) token = localStorage.getItem('doctorToken');
+    else if (localStorage.getItem('receptionistToken')) token = localStorage.getItem('receptionistToken');
+    else if (localStorage.getItem('accountantToken')) token = localStorage.getItem('accountantToken');
+    else if (localStorage.getItem('aToken')) token = localStorage.getItem('aToken');
     else if (localStorage.getItem('dToken')) token = localStorage.getItem('dToken');
     else if (localStorage.getItem('token')) token = localStorage.getItem('token'); // default fallback
 

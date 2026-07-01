@@ -87,8 +87,8 @@ const addDoctor = async (req, res) => {
 
     // Insert user
     const [userResult] = await connection.query(
-      'INSERT INTO users (name, email, password, userType, profileImage) VALUES (?, ?, ?, ?, ?)',
-      [name, email, hashedPassword, 'doctor', image || null]
+      'INSERT INTO users (name, email, password, userType, profileImage, isActive) VALUES (?, ?, ?, ?, ?, ?)',
+      [name, email, hashedPassword, 'doctor', image || null, 1]
     );
     
     const userId = userResult.insertId;

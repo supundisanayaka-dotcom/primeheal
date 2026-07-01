@@ -5,7 +5,29 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:5174'] }));
+app.use(cors({ 
+  origin: function(origin, callback) {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    const allowedLocalOrigins = [
+      /^http:\/\/localhost(?::\d{1,5})?$/,
+      /^http:\/\/127\.0\.0\.1(?::\d{1,5})?$/,
+      /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::\d{1,5})?$/,
+      /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}(?::\d{1,5})?$/
+    ];
+
+    const isAllowed = allowedLocalOrigins.some((pattern) => pattern.test(origin));
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true 
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -11,21 +11,31 @@ const DoctorContextProvider = ({ children }) => {
     localStorage.getItem("currentDoctorId") || ""
   );
 
-  const login = (email, password, doctorsList) => {
-    // Look up the doctor by email in our registered list
-    const foundDoc = doctorsList.find(
-      (doc) => doc.email.toLowerCase() === email.toLowerCase()
-    );
+  const login = async (email, password) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
 
-    if (foundDoc && password === "doctor") {
-      const token = `mock-doctor-token-${foundDoc._id}`;
-      setDoctorToken(token);
-      setCurrentDoctorId(foundDoc._id);
-      localStorage.setItem("doctorToken", token);
-      localStorage.setItem("currentDoctorId", foundDoc._id);
-      return true;
+      const data = await response.json();
+      console.log('Doctor login response:', { status: response.status, data });
+
+      if (data.success && data.user?.userType === "doctor") {
+        setDoctorToken(data.token);
+        setCurrentDoctorId(data.user._id || "");
+        localStorage.setItem("doctorToken", data.token);
+        localStorage.setItem("currentDoctorId", data.user._id || "");
+        return true;
+      }
+      
+      console.log('Doctor login failed:', data);
+      return false;
+    } catch (error) {
+      console.error('Doctor login error:', error);
+      return false;
     }
-    return false;
   };
 
   const logout = () => {

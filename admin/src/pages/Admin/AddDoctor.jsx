@@ -50,10 +50,9 @@ const AddDoctor = () => {
       experience,
       about,
       fees: Number(fees),
-      address: {
-        line1: address1,
-        line2: address2 || "Circle, London"
-      }
+      address1,
+      address2: address2 || "Circle, London",
+      image: null
     };
 
     // If API supports image upload via multer we'd use FormData, but for now we just assume basic JSON

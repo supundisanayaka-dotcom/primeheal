@@ -16,15 +16,17 @@ const AdminContextProvider = ({ children }) => {
       });
       
       const data = await response.json();
+      console.log('Admin login response:', { status: response.status, data });
       
-      if (data.success && data.user.userType === 'admin') {
+      if (data.success && data.user?.userType === 'admin') {
         setAdminToken(data.token);
         localStorage.setItem("adminToken", data.token);
         return true;
       }
+      console.log('Admin login failed:', data);
       return false;
     } catch (error) {
-      console.error(error);
+      console.error('Admin login error:', error);
       return false;
     }
   };

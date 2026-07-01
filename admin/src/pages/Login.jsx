@@ -33,11 +33,11 @@ const Login = () => {
         setError("Invalid Admin email or password. (Hint: admin@primeheal.com / admin)");
       }
     } else if (state === "Doctor") {
-      const success = doctorLogin(email, password, doctors);
+      const success = await doctorLogin(email, password);
       if (success) {
         navigate("/doctor-dashboard");
       } else {
-        setError("Invalid Doctor email or password. (Hint: richard@primeheal.com / doctor)");
+        setError("Invalid Doctor email or password. (Hint: chelakanishshanka@gmail.com / manuja123)");
       }
     } else if (state === "Receptionist") {
       const success = loginReceptionist(email, password);
@@ -131,8 +131,8 @@ const Login = () => {
                     setEmail("admin@primeheal.com");
                     setPassword("admin");
                   } else if (role === "Doctor") {
-                    setEmail("richard@primeheal.com");
-                    setPassword("doctor");
+                    setEmail("chelakanishshanka@gmail.com");
+                    setPassword("manuja123");
                   } else if (role === "Receptionist") {
                     setEmail("alice@primeheal.com");
                     setPassword("receptionist");
