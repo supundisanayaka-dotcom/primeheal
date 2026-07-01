@@ -205,14 +205,67 @@ const Appointment = () => {
   return docInfo && (
     <div>
       {/*---------- Doctor Details ---------- */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-6">
 
-        <div>
-          <img
-            className="bg-gradient-to-b from-primary to-[#E0F2F1] w-full sm:max-w-72 rounded-lg"
-            src={docInfo.image}
-            alt={docInfo.name}
-          />
+        {/* Left Side: Premium Card representation */}
+        <div className="w-full sm:max-w-72 flex-shrink-0">
+          <div className='relative w-full h-[380px] rounded-[32px] overflow-hidden shadow-lg border border-white/20 bg-gradient-to-b from-[#a2c8db] via-[#dceef3] to-[#70824b]'>
+            {/* Ambient gradient/vignette overlays */}
+            <div className='absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/45 via-black/10 to-transparent pointer-events-none z-10'></div>
+            <div className='absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none z-10'></div>
+
+            {/* Main Portrait Image of Doctor */}
+            <img
+              src={docInfo.image}
+              alt={docInfo.name}
+              className='absolute inset-x-0 bottom-0 w-full h-[85%] object-contain object-bottom pointer-events-none z-0'
+            />
+
+            {/* Content Overlays */}
+            <div className='absolute inset-0 p-5 flex flex-col justify-between z-20'>
+              
+              {/* Top: Name and Status */}
+              <div className='text-center'>
+                <h3 className='text-white text-lg md:text-xl font-semibold tracking-wide drop-shadow-sm truncate'>{docInfo.name}</h3>
+                <div className='flex items-center justify-center gap-1.5 mt-1 text-white/85 text-xs'>
+                  {/* Small custom animated spinner */}
+                  <svg className='animate-spin h-3.5 w-3.5 text-white/85' fill='none' viewBox='0 0 24 24'>
+                    <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
+                    <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' />
+                  </svg>
+                  <span className='font-light tracking-wide'>{docInfo.speciality}</span>
+                </div>
+              </div>
+
+              {/* Bottom: Info Footer */}
+              <div className='flex items-end justify-between w-full gap-2'>
+                
+                {/* Left: Avatar and Handle */}
+                <div className='flex items-center gap-2 min-w-0'>
+                  <img
+                    src={docInfo.image}
+                    alt="avatar"
+                    className='w-8 h-8 rounded-full border border-white/50 object-cover bg-white/70 flex-shrink-0'
+                  />
+                  <div className='flex flex-col min-w-0'>
+                    <span className='text-white font-medium text-xs truncate'>
+                      @{docInfo.name.toLowerCase().replace(/dr\.\s*/, '').replace(/\s+/g, '')}
+                    </span>
+                    <span className='text-white/60 text-[10px] font-light truncate'>
+                      {docInfo.experience} Exp
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right side indicator: Active label to match button layout */}
+                <div className='bg-white/95 text-gray-900 px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-md select-none flex-shrink-0'>
+                  Active
+                </div>
+
+              </div>
+
+            </div>
+          </div>
         </div>
 
         <div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 sm:mt-0 mt-[-80px]">

@@ -12,6 +12,10 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [dob, setDob] = useState('')
+  const [address, setAddress] = useState('')
+  const [emergencyContact, setEmergencyContact] = useState('')
+  const [allergies, setAllergies] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
   // Slideshow state
@@ -193,6 +197,69 @@ const Login = () => {
                   )}
                 </button>
               </div>
+
+              {/* Date of Birth (Sign Up only, Optional) */}
+              {state === 'Sign Up' && (
+                <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                  <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    Date of Birth
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                    value={dob}
+                    onChange={(e) => setDob(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {/* Address (Sign Up only, Optional) */}
+              {state === 'Sign Up' && (
+                <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                  <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter address"
+                    className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {/* Emergency Contact (Sign Up only, Optional) */}
+              {state === 'Sign Up' && (
+                <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                  <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    Emergency Contact
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter emergency contact number"
+                    className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                    value={emergencyContact}
+                    onChange={(e) => setEmergencyContact(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {/* Allergies (Sign Up only, Optional) */}
+              {state === 'Sign Up' && (
+                <div className="relative border border-gray-200/80 rounded-xl px-4 py-2 focus-within:border-[#00B4B4] focus-within:ring-2 focus-within:ring-[#00B4B4]/10 transition-all duration-200">
+                  <label className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                    Allergies
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter any allergies (e.g. penicillin)"
+                    className="w-full border-none bg-transparent p-0 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-0 mt-0.5"
+                    value={allergies}
+                    onChange={(e) => setAllergies(e.target.value)}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Forgot Password */}

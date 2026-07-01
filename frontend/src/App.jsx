@@ -19,9 +19,10 @@ const App = () => {
 
   // Determine if we should display the clean, fullscreen login layout
   const isLoginScreen = (location.pathname === '/' && !token) || location.pathname === '/login';
+  const isHome = location.pathname === '/' && token;
 
   return (
-    <div className={isLoginScreen ? "w-full min-h-screen bg-white" : "mx-4 sm:mx-[10%]"}>
+    <div className={isLoginScreen ? "w-full min-h-screen bg-white" : isHome ? "w-full min-h-screen bg-white relative" : "mx-4 sm:mx-[10%]"}>
       {!isLoginScreen && <Navbar />}
       <Routes>
         <Route path='/' element={token ? <Home /> : <Login />} />
@@ -34,7 +35,11 @@ const App = () => {
         <Route path='/my-appointments' element={<MyAppointments />} />
         <Route path='/appointment/:docID' element={<Appointment />} />
       </Routes>
-      {!isLoginScreen && <Footer />}
+      {!isLoginScreen && (
+        <div className={isHome ? "mx-4 sm:mx-[10%]" : ""}>
+          <Footer />
+        </div>
+      )}
     </div>
   );
 };

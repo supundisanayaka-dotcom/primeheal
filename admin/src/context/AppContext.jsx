@@ -189,10 +189,10 @@ const AppContextProvider = ({ children }) => {
       name: "Dr. Patrick Harris",
       email: "patrick@primeheal.com",
       image: assets.doc12,
-      speciality: "Neurologist",
+      speciality: "Gastroenterologist",
       degree: "MBBS",
       experience: "4 Years",
-      about: "Dr. Patrick Harris is dedicated to providing comprehensive neurological care and rehabilitation plans, prioritizing clinical safety and healthy recovery.",
+      about: "Dr. Patrick Harris is dedicated to providing comprehensive gastroenterological care and rehabilitation plans, prioritizing clinical safety and healthy recovery.",
       fees: 50,
       available: true,
       address: {
