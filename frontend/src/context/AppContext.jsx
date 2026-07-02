@@ -4,7 +4,7 @@ import { doctors } from "../assets/assets";
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const currencySymbol = '$'  
+  const currencySymbol = 'LKR '  
   const [token, setToken] = useState(false)
 
   const value = {
